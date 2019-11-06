@@ -40,7 +40,7 @@
 /* Second Sidebar */
 
 .hight {
-    margin-top: 20%;
+    margin-top: 5%;
 }
 
 .secondSideBar {
@@ -88,6 +88,24 @@
     width: 90%;
     position: absolute;
     margin-left: 130px;
+    transition: 1s;
+    top: 0;
+}
+
+.savebtn {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    margin-top: 46%;
+    margin-left: 90%;
+    border: 1.5px solid lightblue;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.savebtn:hover {
+    box-shadow: 5px 8px lightblue;
     transition: 1s;
 }
 

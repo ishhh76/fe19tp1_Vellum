@@ -13,7 +13,7 @@ function closeNav() {
 }
 
 tinymce.init({
-    height: "700px",
+    height: "800px",
     selector: 'textarea',  // change this value according to the HTML
     plugins: ['print', 'image imagetools', 'wordcount', 'save', 'lists', 'fullscreen', 'bbcode'],
     menubar: false,
@@ -21,14 +21,19 @@ tinymce.init({
         'newdocument print | undo redo | numlist bullist | italic bold | alignleft aligncenter alignright | styleselect | wordcount link image fullscreen save'
     ],
     style_formats: [
-        { title: 'Heading 1', format: 'h1', fontsize: '100px' },
+        { title: 'Heading 1', format: 'h1'},
         { title: 'Heading 2', format: 'h2' },
         { title: 'Heading 3', format: 'h3' },
         { title: 'Heading 4', format: 'h4' },
         { title: 'Heading 5', format: 'h5' },
         { title: 'Paragraph', format: 'p' }
       ],
-  });
-  
 
+      save_onsavecallback: function () {
+          var content = tinymce.activeEditor.getContent();
+          console.log(content);
+          localStorage.setItem('name', content);
+          console.log(localStorage);
+      }
+  });
   
