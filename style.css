@@ -1,5 +1,41 @@
 * {
     font-family: 'Roboto', sans-serif;
+}  
+
+#editor{
+    max-width: 90%;
+    width: 90%;
+    position: absolute;
+    margin-left: 130px;
+    transition: 1s;
+    top: 0;
+    height: 93%;
+  }
+
+  #quillEditor { /* Inside editor */
+      padding: 20px;
+  }
+
+  .ql-toolbar.ql-snow {
+      background-color: whitesmoke;
+  }
+
+.savebtn {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    margin-top: 47%;
+    margin-left: 90%;
+    font-size: 28px;
+    text-decoration: none;
+    letter-spacing: 0.15rem;
+    color: black;
+    border-bottom: 1px solid lightgrey;
+}
+
+.savebtn:hover {
+    text-shadow: 4px 4px 2px grey;
+    transition: all 0.5s ease-in-out 0s;
 }
 
 /*Sidans logga*/
@@ -8,8 +44,8 @@
     max-width: 50%;
     max-height: 50%;
     margin-left: 26px;
-    border-bottom: lightgrey solid 0.5px;
     cursor: pointer;
+    border-bottom: 0.5px solid lightgrey;
 }
 
 /* Fixed sideBar */
@@ -29,18 +65,18 @@
 
 /* Ikoner */
 .fa-search:before, .fa-star:before, .fa-cog:before, .fa-folder:before { 
-    padding: 6px 15px 8px 16px;
+    padding: 0px 15px 8px 16px;
     display: block;
-    margin-top: 40%;
+    margin-top: 50%;
     margin-left: 34px;
     cursor: pointer;
-    border-bottom: lightgrey solid 1px;
+    border-bottom: 0.5px solid lightgrey;
 }
 
 /* Second Sidebar */
 
 .hight {
-    margin-top: 5%;
+    margin-top: 2%;
 }
 
 .secondSideBar {
@@ -56,7 +92,14 @@
     border-right: lightgrey solid 0.5px;
 }
 
-.secondSideBar a, p {
+#justText div {
+    padding: 0px 0px 0px 5px;
+    word-break: break-all;
+    transition: 0.3s;
+    border: 1px solid grey
+}
+
+.secondSideBar a {
     padding: 6px 6px 8px 16px;
     text-decoration: none;
     font-size: 15px;
@@ -65,49 +108,62 @@
     transition: 0.3s;
 }
 
-.secondSideBar .rubrik {
-    margin-top: 2%;
-    text-align: center;
-    font-size: 30px;
-    transition: 0.3s;
-}
-
-.rubrik:hover {
-    color: #6ECCCC;
-    transition: 0.5s;   
-}
-
 .closebtn {
     margin-left: 250px;
 }
 
-/* Editor */
+/* Popup */
 
-#main { /* Editor */
-    max-width: 90%;
-    width: 90%;
-    position: absolute;
-    margin-left: 130px;
-    transition: 1s;
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
     top: 0;
-}
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 20px;
+    width: 30%;
+  }
+  ul{
+      list-style-type: none;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
 
-.savebtn {
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    margin-top: 46%;
-    margin-left: 90%;
-    border: 1.5px solid lightblue;
-    font-size: 20px;
-    padding: 10px;
-    border-radius: 8px;
-}
+  .modal-content > p, li, .welcome {
+      text-align: center;
+  }
 
-.savebtn:hover {
-    box-shadow: 5px 8px lightblue;
-    transition: 1s;
-}
+  .welcome {
+    text-shadow: 3px 3px 2px lightgrey;
+  }
+
 
 
 
