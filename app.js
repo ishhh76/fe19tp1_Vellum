@@ -1,10 +1,7 @@
 let noteList = [];
-var selectedNote = {};
-/*
-quire: {noteList: [{}...],
-      showSplash: false,
-}}
-*/
+const savebtn = document.querySelector('.savebtn');
+const justText = document.querySelector('#justText');
+
 // Sidabar
 function openNav() {
   document.getElementById("secondSideBar").style.width = "300px";
@@ -16,16 +13,13 @@ function closeNav() {
   document.getElementById("editor").style.width = "90%";
   document.getElementById("editor").style.marginLeft = "130px";
 }
-
 /* Editor */
 
-const savebtn = document.querySelector('.savebtn');
-const justText = document.querySelector('#justText');
 var Delta = Quill.import('delta');
 var options = {
   modules: {
     toolbar: [
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
       ['bold', 'italic', 'underline'],
       ['link', 'image'],
       [{ 'list': 'ordered' }, { 'list': 'bullet' }],
@@ -37,94 +31,105 @@ var options = {
   theme: 'snow'
 };
 var editor = new Quill('#quillEditor', options);
-var justTextContent = document.getElementById('justText');
 
-const retrieveData = () => {
-  const loadData = JSON.parse(window.localStorage.getItem('quire')); //ändra kod. hämta array från local
-  editor.setContents(loadData);
-}
 
+
+//Save button
 savebtn.addEventListener('click', () => {
+
   let note = {
     id: Date.now(),
     title: editor.getText(0, 10),
     contents: editor.getContents(),
-    favourite: false
+    favourite: false,
+    started: true
   };
-  noteList.push(note);
-  saveNotes();
-  //
+
   let newDiv = document.createElement("div");
   newDiv.id = note.id;
-  justText.appendChild(newDiv);
+  justText.insertBefore(newDiv, justText.childNodes[0]);
   newDiv.classList.add('div');
-  newDiv.innerHTML = note.title;
-  //
+  newDiv.innerHTML = `<strong>Title:</strong> ${note.title}....<br><strong>Tema:</strong>... <br><strong>Datum:</strong>${Date(note.id)}`;
+
+  noteList.unshift(note);
+  saveNotes();
   clearEditor();
+
 });
-justText.addEventListener('click', e => { // click handler for load note
-  if (e.target) {
-    // myArray.find(x => x.id === '45').contents;
-    console.log(e.target.id)
-    selectedNote = noteList.find(note => note.id == e.target.id);
-    editor.setContents(selectedNote.contents);
-    //retrieveData();
-  }
-});
-function loadNotes() {
-  if (localStorage.getItem('quire')) {
-    noteList = JSON.parse(localStorage.getItem('quire')).notes
-  } else {
-    noteList = [];
-  }
-}
-function renderNotes() {
-  justText.innerHTML = "";
-  noteList.forEach(note => {
-    let newDiv = document.createElement("div");
-    newDiv.id = note.id;
-    justText.insertBefore(newDiv, justText.childNodes[0]);
-    newDiv.classList.add('div');
-    newDiv.innerHTML = note.title;
-    saveNotes();
-  })
-}
-function saveNotes() {
-  localStorage.setItem('quire', JSON.stringify({ showSplash: true, notes: noteList }))
-}
+
+
 // Load localstorage när sidan laddar
 window.addEventListener('DOMContentLoaded', (event) => {
   let quire = JSON.parse(localStorage.getItem('quire'));
-  if (quire) {
+  if (quire.showSplash) {
     modal.style.display = "none";
   } else {
     modal.style.display = "block";
   }
   loadNotes();
-  renderNotes();
 });
+
+//Laddar info från local storage
+function loadNotes() {
+  if (localStorage.getItem('quire')) {
+    noteList = JSON.parse(localStorage.getItem('quire')).notes
+    editor.setContents(noteList[0].contents);
+    renderDocs();
+  } else {
+    noteList = [];
+  }
+}
+
+//Rensar editorn
 function clearEditor() {
   editor.setContents([
     { insert: '\n' }
   ]);
 }
 
-// List 
-
-function mySearch() { //Göra imorgon en search function!!
-
+//Sparar dokumentet till local storage
+function saveNotes() {
+  localStorage.setItem('quire', JSON.stringify({ showSplash: true, notes: noteList }))
 }
 
+//Renderar dokumentet samt div när sidan laddas om
+function renderDocs() {
+  noteList.forEach(e => {
+    let newDiv = document.createElement("div");
+    newDiv.id = e.id;
+    justText.appendChild(newDiv);
+    newDiv.classList.add('div');
+    newDiv.innerHTML = `<strong>Title:</strong> ${e.title}....<br><strong>Tema:</strong>... <br><strong>Datum:</strong>${Date(e.id)}`;
+  });
+}
+
+//Click event för divarna
+justText.addEventListener('click', e => {
+  const newDiv = document.querySelectorAll('#justText > div');
+  const loadData = JSON.parse(localStorage.getItem('quire')).notes;
+  for (let i = 0; i < loadData.length; i++) {
+    if (loadData[i].id == e.target.id) {
+      editor.setContents(loadData[i].contents);
+      newDiv.forEach(event => {
+        if (e.target == event) {
+          event.classList.add('picked');
+        } else { event.classList.remove('picked') }
+      })
+
+    }
+  }
+
+})
 
 
 /* Popup */
-
 // Get the modal
 var modal = document.getElementById("myModal");
 // Get the button that opens the modal
 var btn = document.getElementById("myBtn");
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
+
 // When the user clicks the button, open the modal
 window.onload = function () {
   //modal.style.display = "block";
