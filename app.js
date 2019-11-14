@@ -48,7 +48,11 @@ savebtn.addEventListener('click', () => {
   newDiv.id = note.id;
   justText.insertBefore(newDiv, justText.childNodes[0]);
   newDiv.classList.add('div');
-  newDiv.innerHTML = `<strong>Title:</strong> ${note.title}....<br><strong>Tema:</strong>... <br><strong>Datum:</strong>${Date(note.id)}`;
+  let newDivList = {
+    title: `<strong>Title:</strong> ${note.title}....`,
+    date: `<strong>Datum:</strong>${Date(note.id)}`
+  };
+  newDiv.innerHTML = `${newDivList.title} <br> ${newDivList.date}`;
 
   noteList.unshift(note);
   saveNotes();
@@ -90,6 +94,7 @@ function saveNotes() {
   localStorage.setItem('quire', JSON.stringify({ showSplash: true, notes: noteList }))
 }
 
+
 //Renderar dokumentet samt div när sidan laddas om
 function renderDocs() {
   noteList.forEach(e => {
@@ -97,7 +102,11 @@ function renderDocs() {
     newDiv.id = e.id;
     justText.appendChild(newDiv);
     newDiv.classList.add('div');
-    newDiv.innerHTML = `<strong>Title:</strong> ${e.title}....<br><strong>Tema:</strong>... <br><strong>Datum:</strong>${Date(e.id)}`;
+    let newDivList = {
+      title: `<strong>Title:</strong><span class = 'span'> ${e.title}....</span>`,
+      date: `<strong>Datum:</strong>${Date(e.id)}`
+    };
+    newDiv.innerHTML = `${newDivList.title} <br> ${newDivList.date}`;
   });
 }
 
@@ -146,7 +155,7 @@ function search() {
   let input = document.querySelector('#search');
   let filter = input.value.toUpperCase();
   for (let i = 0; i < justText.childNodes.length; i++) {
-    textValue = justText.childNodes[i].textContent || justText.childNodes[i].innerText;
+    textValue = justText.childNodes[i].childNodes[1].textContent || justText.childNodes[i].childNodes[1].innerText;
     if (textValue.toUpperCase().indexOf(filter) > -1) {
       justText.childNodes[i].style.display = "";
     } else {
@@ -154,6 +163,8 @@ function search() {
     }
   }
 }
+
+
 
 input.addEventListener('keyup', e => {
   search();
