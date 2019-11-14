@@ -1,6 +1,7 @@
 let noteList = [];
 const savebtn = document.querySelector('.savebtn');
 const justText = document.querySelector('#justText');
+const input = document.querySelector('#search');
 
 // Sidabar
 function openNav() {
@@ -26,13 +27,11 @@ var options = {
       [{ 'align': [] }],
     ]
   },
-  placeholder: null,
-  // 'Write something fun...'
+  placeholder: 'Write something fun...',
   theme: 'snow'
 };
+
 var editor = new Quill('#quillEditor', options);
-
-
 
 //Save button
 savebtn.addEventListener('click', () => {
@@ -53,15 +52,14 @@ savebtn.addEventListener('click', () => {
 
   noteList.unshift(note);
   saveNotes();
-  clearEditor();
+  //clearEditor();
 
 });
-
 
 // Load localstorage när sidan laddar
 window.addEventListener('DOMContentLoaded', (event) => {
   let quire = JSON.parse(localStorage.getItem('quire'));
-  if (quire.showSplash) {
+  if (quire) {
     modal.style.display = "none";
   } else {
     modal.style.display = "block";
@@ -121,7 +119,6 @@ justText.addEventListener('click', e => {
 
 })
 
-
 /* Popup */
 // Get the modal
 var modal = document.getElementById("myModal");
@@ -144,3 +141,23 @@ window.onclick = function (event) {
     modal.style.display = "none";
   }
 }
+
+function search() {
+  let input = document.querySelector('#search');
+  let filter = input.value.toUpperCase();
+  for (let i = 0; i < justText.childNodes.length; i++) {
+    textValue = justText.childNodes[i].textContent || justText.childNodes[i].innerText;
+    if (textValue.toUpperCase().indexOf(filter) > -1) {
+      justText.childNodes[i].style.display = "";
+    } else {
+      justText.childNodes[i].style.display = 'none';
+    }
+  }
+}
+
+input.addEventListener('keyup', e => {
+  search();
+  input.addEventListener('click', e => {
+    justText.childNodes.forEach(e => { e.style.display = "block" })
+  })
+})
