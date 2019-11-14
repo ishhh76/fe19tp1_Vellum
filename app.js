@@ -1,4 +1,5 @@
 let noteList = [];
+var selectedNote = {};
 /*
 quire: {noteList: [{}...],
       showSplash: false,
@@ -15,14 +16,16 @@ function closeNav() {
   document.getElementById("editor").style.width = "90%";
   document.getElementById("editor").style.marginLeft = "130px";
 }
+
 /* Editor */
+
 const savebtn = document.querySelector('.savebtn');
 const justText = document.querySelector('#justText');
 var Delta = Quill.import('delta');
 var options = {
   modules: {
     toolbar: [
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
       ['bold', 'italic', 'underline'],
       ['link', 'image'],
       [{ 'list': 'ordered' }, { 'list': 'bullet' }],
@@ -35,27 +38,12 @@ var options = {
 };
 var editor = new Quill('#quillEditor', options);
 var justTextContent = document.getElementById('justText');
-// editor.on('text-change', function() {
-//   var text = editor.root.innerHTML;
-//   justTextContent.innerHTML = text;
-// });
-/* var change = new Delta();
-editor.on('text-change', function (delta) {
-change = change.compose(delta);
-});
-// Save periodically
-setInterval(function () {
-if (change.length() > 0) {
-  // Save the entire updated text to localStorage
-  const data = JSON.stringify(editor.getContents());
-  localStorage.setItem('key', data);
-  change = new Delta();
-};
-}, 5 * 1000); */
+
 const retrieveData = () => {
-  const loadData = JSON.parse(localStorage.getItem('quire')); //ändra kod. hämta array från local
+  const loadData = JSON.parse(window.localStorage.getItem('quire')); //ändra kod. hämta array från local
   editor.setContents(loadData);
 }
+
 savebtn.addEventListener('click', () => {
   let note = {
     id: Date.now(),
@@ -74,9 +62,13 @@ savebtn.addEventListener('click', () => {
   //
   clearEditor();
 });
-justText.addEventListener('click', e => {
+justText.addEventListener('click', e => { // click handler for load note
   if (e.target) {
-    retrieveData();
+    // myArray.find(x => x.id === '45').contents;
+    console.log(e.target.id)
+    selectedNote = noteList.find(note => note.id == e.target.id);
+    editor.setContents(selectedNote.contents);
+    //retrieveData();
   }
 });
 function loadNotes() {
@@ -86,24 +78,45 @@ function loadNotes() {
     noteList = [];
   }
 }
+function renderNotes() {
+  justText.innerHTML = "";
+  noteList.forEach(note => {
+    let newDiv = document.createElement("div");
+    newDiv.id = note.id;
+    justText.insertBefore(newDiv, justText.childNodes[0]);
+    newDiv.classList.add('div');
+    newDiv.innerHTML = note.title;
+    saveNotes();
+  })
+}
 function saveNotes() {
   localStorage.setItem('quire', JSON.stringify({ showSplash: true, notes: noteList }))
 }
 // Load localstorage när sidan laddar
 window.addEventListener('DOMContentLoaded', (event) => {
   let quire = JSON.parse(localStorage.getItem('quire'));
-  if (quire.showSplash) {
+  if (quire) {
     modal.style.display = "none";
   } else {
     modal.style.display = "block";
   }
   loadNotes();
+  renderNotes();
 });
 function clearEditor() {
   editor.setContents([
     { insert: '\n' }
   ]);
 }
+
+// List 
+
+function mySearch() { //Göra imorgon en search function!!
+
+}
+
+
+
 /* Popup */
 
 // Get the modal
@@ -126,5 +139,3 @@ window.onclick = function (event) {
     modal.style.display = "none";
   }
 }
-
-  

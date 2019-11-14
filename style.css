@@ -20,13 +20,15 @@
       background-color: #fafafa;
   }
 
+/* Knappar */
+
 .savebtn {
     z-index: 1;
     position: absolute;
     top: 0;
     margin-top: 50%;
-    margin-left: 85%;
-    font-size: 15px;
+    margin-left: 90%;
+    font-size: 25px;
     text-decoration: none;
     letter-spacing: 0.15rem;
     color: black;
@@ -44,7 +46,7 @@
     max-height: 50%;
     margin-left: 26px;
     cursor: pointer;
-    border-bottom: 0.5px solid lightgrey;
+    border-bottom: 1px solid grey;
 }
 
 /* Fixed sideBar */
@@ -56,26 +58,62 @@
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #fafafa;
+    background-color: #c8e6c9;
     padding-top: 20px;
     overflow: visible;
     border-right: lightgrey solid 0.5px;
 }
 
 /* Ikoner */
-.fa-search:before, .fa-star:before, .fa-cog:before, .fa-folder:before { 
+.fa-plus:before, .fa-star:before, .fa-cog:before, .fa-folder:before { 
     padding: 0px 15px 8px 16px;
     display: block;
     margin-top: 50%;
     margin-left: 34px;
     cursor: pointer;
-    border-bottom: 0.5px solid lightgrey;
+    border-bottom: 1px solid grey;
+}
+
+.fa-plus:hover, .fa-folder:hover, .fa-cog:hover, .fa-star:hover {
+ margin-left: 10px;
+ transition: 1s;
 }
 
 /* Second Sidebar */
 
+#search {
+    margin-bottom: 20px;
+    text-align: center;
+    margin-left: 30%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid lightgray;
+    cursor: pointer;
+}
+
+#search:hover {
+    box-shadow: 5px 10px 8px #888888;
+    transition: 1s;
+}
+
+input:invalid ~ span:after {
+    content: '✖';
+    padding-left: 5px;
+    position: absolute;
+}
+
+input:valid ~ span:after {
+    content: '✓';
+    padding-left: 5px;
+    position: absolute;
+}
+
 .hight {
     margin-top: 2%;
+}
+
+.line {
+    border-bottom: 1px solid grey;
 }
 
 .secondSideBar {
@@ -85,19 +123,24 @@
     z-index: 1;
     top: 0;
     left: 131px;
-    background-color: white;
+    background-color: #fafafa;
     overflow-x: hidden;
     transition: 1s;
     border-right: lightgrey solid 0.5px;
 }
 
 #justText div {
-    padding: 0px 0px 0px 5px;
     word-break: break-all;
     transition: 0.3s;
-    border-bottom: 0.2px solid grey;
-    margin-top: 12px;
-    padding: 5px;
+    border-bottom: 1px solid grey;
+    height: 90px;
+    cursor: pointer;
+    text-align: center;
+}
+
+#justText div:hover {
+    transition: 0.7s;
+    background-color: #e0e0e0;
 }
 
 .secondSideBar a {
@@ -164,8 +207,6 @@
   .welcome {
     text-shadow: 3px 3px 2px lightgrey;
   }
-
-
 
 
 
