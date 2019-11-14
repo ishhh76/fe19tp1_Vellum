@@ -1,6 +1,7 @@
 let noteList = [];
 const savebtn = document.querySelector('.savebtn');
 const justText = document.querySelector('#justText');
+const input = document.querySelector('#search');
 
 // Sidabar
 function openNav() {
@@ -26,13 +27,11 @@ var options = {
       [{ 'align': [] }],
     ]
   },
-  placeholder: null,
-  // 'Write something fun...'
+  placeholder: 'Write something fun...',
   theme: 'snow'
 };
+
 var editor = new Quill('#quillEditor', options);
-
-
 
 //Save button
 savebtn.addEventListener('click', () => {
@@ -49,19 +48,22 @@ savebtn.addEventListener('click', () => {
   newDiv.id = note.id;
   justText.insertBefore(newDiv, justText.childNodes[0]);
   newDiv.classList.add('div');
-  newDiv.innerHTML = `<strong>Title:</strong> ${note.title}....<br><strong>Tema:</strong>... <br><strong>Datum:</strong>${Date(note.id)}`;
+  let newDivList = {
+    title: `<strong>Title:</strong> ${note.title}....`,
+    date: `<strong>Datum:</strong>${Date(note.id)}`
+  };
+  newDiv.innerHTML = `${newDivList.title} <br> ${newDivList.date}`;
 
   noteList.unshift(note);
   saveNotes();
-  clearEditor();
+  //clearEditor();
 
 });
-
 
 // Load localstorage när sidan laddar
 window.addEventListener('DOMContentLoaded', (event) => {
   let quire = JSON.parse(localStorage.getItem('quire'));
-  if (quire.showSplash) {
+  if (quire) {
     modal.style.display = "none";
   } else {
     modal.style.display = "block";
@@ -92,6 +94,7 @@ function saveNotes() {
   localStorage.setItem('quire', JSON.stringify({ showSplash: true, notes: noteList }))
 }
 
+
 //Renderar dokumentet samt div när sidan laddas om
 function renderDocs() {
   noteList.forEach(e => {
@@ -99,7 +102,11 @@ function renderDocs() {
     newDiv.id = e.id;
     justText.appendChild(newDiv);
     newDiv.classList.add('div');
-    newDiv.innerHTML = `<strong>Title:</strong> ${e.title}....<br><strong>Tema:</strong>... <br><strong>Datum:</strong>${Date(e.id)}`;
+    let newDivList = {
+      title: `<strong>Title:</strong><span class = 'span'> ${e.title}....</span>`,
+      date: `<strong>Datum:</strong>${Date(e.id)}`
+    };
+    newDiv.innerHTML = `${newDivList.title} <br> ${newDivList.date}`;
   });
 }
 
@@ -120,7 +127,6 @@ justText.addEventListener('click', e => {
   }
 
 })
-
 
 /* Popup */
 // Get the modal
@@ -144,3 +150,25 @@ window.onclick = function (event) {
     modal.style.display = "none";
   }
 }
+
+function search() {
+  let input = document.querySelector('#search');
+  let filter = input.value.toUpperCase();
+  for (let i = 0; i < justText.childNodes.length; i++) {
+    textValue = justText.childNodes[i].childNodes[1].textContent || justText.childNodes[i].childNodes[1].innerText;
+    if (textValue.toUpperCase().indexOf(filter) > -1) {
+      justText.childNodes[i].style.display = "";
+    } else {
+      justText.childNodes[i].style.display = 'none';
+    }
+  }
+}
+
+
+
+input.addEventListener('keyup', e => {
+  search();
+  input.addEventListener('click', e => {
+    justText.childNodes.forEach(e => { e.style.display = "block" })
+  })
+})
